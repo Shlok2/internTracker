@@ -1,0 +1,25 @@
+.card-profile-stats img{
+    max-width: 56px;
+    border-radius: 50%;
+    border: 1px solid #111;
+}
+
+.platformx{
+    color: rgb(255, 0, 0);;
+}
+
+.stage{
+    color: rgb(243, 102, 33);
+}
+
+.statusx{
+    color: rgb(0, 195, 0);
+}
+
+.calender{
+    color: purple;
+}
+
+.notes{
+    color: rgb(29, 172, 230);
+}
