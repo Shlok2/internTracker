@@ -28,7 +28,7 @@ const Register = () => {
   const [showspin,setShowSpin] = useState(true);
   const navigate = useNavigate();
 
-  const {useradd,setUseradd} = useContext(addData);
+  const {setUseradd} = useContext(addData);
 
   // Status Options
   const options = [

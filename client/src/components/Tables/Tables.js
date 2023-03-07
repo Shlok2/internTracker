@@ -6,7 +6,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Badge from 'react-bootstrap/Badge';
 import './table.css';
 
-const Tables = () => {
+const Tables = ({userdata}) => {
   return (
     <>
       <div className='container'>
@@ -26,50 +26,59 @@ const Tables = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Amazon</td>
-                    <td>Internshala</td>
-                    <td>20/10/2002</td>
-                    <td>1st Round</td>
-                    <td className='d-flex align-items-center'>
-                      <Dropdown className='text-center'>
-                        <Dropdown.Toggle className='dropdown_btn' id="dropdown-basic">
-                          <Badge bg="primary">
-                            Applied <i className="fa-solid fa-angle-down"></i>
-                          </Badge>
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <Dropdown.Item>Applied</Dropdown.Item>
-                          <Dropdown.Item>Not-Applied</Dropdown.Item>
-                          <Dropdown.Item>In-Contact</Dropdown.Item>
-                          <Dropdown.Item>Rejected</Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </td>
-                    <td>
-                    <Dropdown className='text-center'>
-                        <Dropdown.Toggle variant='light' className='action' id="dropdown-basic">
-                          {/* <Badge bg="primary"> */}
-                            <i className="fa-solid fa-ellipsis-vertical"></i>
-                          {/* </Badge> */}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          <Dropdown.Item>
-                            <i className="fa-solid fa-eye" style={{color:"green"}}></i>&nbsp; <span>View</span>
-                          </Dropdown.Item>
-                          <Dropdown.Item>
-                            <i className="fa-solid fa-pen-to-square" style={{color:"blue"}}></i>&nbsp; <span>Edit</span>
-                          </Dropdown.Item>
-                          <Dropdown.Item>
-                            <i className="fa-solid fa-trash" style={{color:"red"}}></i>&nbsp; <span>Delete</span>
-                          </Dropdown.Item>
-                          
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </td>
-                  </tr>
-                 </tbody>      
+                {
+                  userdata.length > 0 ? userdata.map((element,index) => {
+                    return (
+                      <>
+                        <tr>
+                          <td>{index + 1}</td>
+                          <td>{element.name}</td>
+                          <td>{element.platform}</td>
+                          <td>{element.date.slice(0,10)}</td>
+                          <td>{element.stage}</td>
+                          <td className='d-flex align-items-center'>
+                            <Dropdown className='text-center'>
+                              <Dropdown.Toggle className='dropdown_btn' id="dropdown-basic">
+                                <Badge bg={(element.status === "Applied" || element.status === "In-Contact") ? "primary":"danger"}>
+                                  {element.status} <i className="fa-solid fa-angle-down"></i>
+                                </Badge>
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                <Dropdown.Item>Applied</Dropdown.Item>
+                                <Dropdown.Item>Not-Applied</Dropdown.Item>
+                                <Dropdown.Item>In-Contact</Dropdown.Item>
+                                <Dropdown.Item>Rejected</Dropdown.Item>
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </td>
+                          <td>
+                          <Dropdown className='text-center'>
+                              <Dropdown.Toggle variant='light' className='action' id="dropdown-basic">
+                                
+                                  <i className="fa-solid fa-ellipsis-vertical"></i>
+                                
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                <Dropdown.Item>
+                                  <i className="fa-solid fa-eye" style={{color:"green"}}></i>&nbsp; <span>View</span>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                  <i className="fa-solid fa-pen-to-square" style={{color:"blue"}}></i>&nbsp; <span>Edit</span>
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                  <i className="fa-solid fa-trash" style={{color:"red"}}></i>&nbsp; <span>Delete</span>
+                                </Dropdown.Item>
+                                
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </td>
+                        </tr>
+                      </>
+                    )
+                  }) : <div className='no_data text-center'>No Data Found</div>
+                }
+                  
+                </tbody>      
               </Table>
             </Card>
           </div>

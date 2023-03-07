@@ -1,6 +1,8 @@
 const users = require("../models/usersSchema");
 const moment = require("moment");
 
+// Register user
+//frontend to backend
 exports.userpost = async(req,res)=>{
     // const file = req.file.filename;
     const {name,stage,platform,notes,status,date} = req.body;
@@ -25,5 +27,17 @@ exports.userpost = async(req,res)=>{
     catch(error){
         res.status(401).json(error);
         console.log("catch block error");
+    }
+}
+
+//usersget
+// backend to frontend
+exports.userget = async(req,res) => {
+    try {
+        // find all users from users model
+        const usersdata = await users.find();
+        res.status(200).json(usersdata);
+    } catch (error) {
+        res.status(401).json(error);
     }
 }

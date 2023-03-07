@@ -8,9 +8,12 @@ import {useNavigate} from 'react-router-dom';
 import Tables from '../../components/Tables/Tables';
 import Alert from 'react-bootstrap/Alert';
 import { addData } from '../../components/context/ContextProvider';
+import { usergetfunc } from '../../services/Apis';
 
 const Home = () => {
 
+  // This will store all the database content entries.
+  const [userdata,setUserData] = useState([]);
   const [showspin,setShowSpin] = useState(true);
 
   const {useradd,setUseradd} = useContext(addData);
@@ -21,7 +24,20 @@ const Home = () => {
     navigate("/register");
   }
 
+  const userGet = async() => {
+    const response = await usergetfunc()
+
+    // Store all the data coming from db to userdata state
+    if(response.status === 200){
+      setUserData(response.data)
+    }
+    else{
+      console.log("error for get user data");
+    }
+  }
+
   useEffect(() => {
+    userGet()
     setTimeout(() => {
       setShowSpin(false);
     },1200)
@@ -117,7 +133,9 @@ const Home = () => {
           </div>
         </div>
         {
-          showspin ? <Spiner/> : <Tables/>
+          showspin ? <Spiner/> : <Tables
+                                    userdata={userdata}
+                                  />
         } 
 
       </div>
