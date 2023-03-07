@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import "./register.css";
 import Card from "react-bootstrap/Card";
 import {Button,Row} from 'react-bootstrap';
@@ -7,8 +7,11 @@ import Select from 'react-select';
 import DatePicker from 'react-date-picker';
 import TextField from '@material-ui/core/TextField';
 import Spiner from '../../components/Spiner/Spiner';
+import {registerfunc} from '../../services/Apis';
+import {useNavigate} from 'react-router-dom';
 import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { addData } from '../../components/context/ContextProvider';
 
 const Register = () => {
 
@@ -21,10 +24,11 @@ const Register = () => {
   // console.log(inputData);
 
   const [status,setStatus] = useState("");
-
   const [date,setDate] = useState(new Date());
-
   const [showspin,setShowSpin] = useState(true);
+  const navigate = useNavigate();
+
+  const {useradd,setUseradd} = useContext(addData);
 
   // Status Options
   const options = [
@@ -35,6 +39,9 @@ const Register = () => {
   ];
   // console.log(inputData);
   // console.log(date);
+  // var myDateString = date.toString();
+  // console.log(typeof(myDateString));
+  // console.log(typeof(date.getDate()));
   // console.log(status);
 
   // Set Input Values
@@ -51,9 +58,9 @@ const Register = () => {
     setDate(e);
   }
 
-  const submitUserData = (e) => {
+  const submitUserData = async(e) => {
     e.preventDefault();
-    const {name,stage,platform} = inputData;
+    const {name,stage,platform,notes} = inputData;
 
     if(name === ""){
       toast.error("Company Name is required !");
@@ -68,7 +75,33 @@ const Register = () => {
       toast.error("Status is required !");
     }
     else{
-      toast.success("Added Successfully !")
+      const data =  new FormData();
+      data.append("name",name);
+      data.append("stage",stage);
+      data.append("platform",platform);
+      data.append("notes",notes);
+      data.append("status",status);
+      data.append("date",date.toString());
+
+      const config = {
+        "Content-Type": "multipart"/"form-data"
+      }
+      const response = await registerfunc(data,config)
+      if(response.status === 200){
+        setInputData({
+          ...inputData,
+          name: "",
+          stage: "",
+          platform: "",
+          notes: ""
+        });
+        setStatus("");
+        setDate(new Date());
+        setUseradd(response.data);
+        navigate("/");
+      }else{
+        toast.error("Error in storing Data !");
+      }
     }
   }
 
@@ -131,7 +164,7 @@ const Register = () => {
 
                 <Form.Group className="mb-3 col-lg-6" controlId="formBasicEmail">
                   <Form.Label>Status</Form.Label>
-                  <Select onChange={setStatusValue} value={status} options={options}/>
+                  <Select onChange={setStatusValue} options={options}/>
                 </Form.Group>
 
                 <Form.Group className="mb-3 col-lg-6" controlId="formBasicEmail">

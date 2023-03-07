@@ -36,7 +36,7 @@ const Tables = () => {
                       <Dropdown className='text-center'>
                         <Dropdown.Toggle className='dropdown_btn' id="dropdown-basic">
                           <Badge bg="primary">
-                            Applied <i class="fa-solid fa-angle-down"></i>
+                            Applied <i className="fa-solid fa-angle-down"></i>
                           </Badge>
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
@@ -51,18 +51,18 @@ const Tables = () => {
                     <Dropdown className='text-center'>
                         <Dropdown.Toggle variant='light' className='action' id="dropdown-basic">
                           {/* <Badge bg="primary"> */}
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                            <i className="fa-solid fa-ellipsis-vertical"></i>
                           {/* </Badge> */}
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item>
-                            <i class="fa-solid fa-eye" style={{color:"green"}}></i>&nbsp; <span>View</span>
+                            <i className="fa-solid fa-eye" style={{color:"green"}}></i>&nbsp; <span>View</span>
                           </Dropdown.Item>
                           <Dropdown.Item>
-                            <i class="fa-solid fa-pen-to-square" style={{color:"blue"}}></i>&nbsp; <span>Edit</span>
+                            <i className="fa-solid fa-pen-to-square" style={{color:"blue"}}></i>&nbsp; <span>Edit</span>
                           </Dropdown.Item>
                           <Dropdown.Item>
-                            <i class="fa-solid fa-trash" style={{color:"red"}}></i>&nbsp; <span>Delete</span>
+                            <i className="fa-solid fa-trash" style={{color:"red"}}></i>&nbsp; <span>Delete</span>
                           </Dropdown.Item>
                           
                         </Dropdown.Menu>

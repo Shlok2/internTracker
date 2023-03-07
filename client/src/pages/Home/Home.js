@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useContext} from 'react';
 import "./home.css";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -6,10 +6,14 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Spiner from '../../components/Spiner/Spiner';
 import {useNavigate} from 'react-router-dom';
 import Tables from '../../components/Tables/Tables';
+import Alert from 'react-bootstrap/Alert';
+import { addData } from '../../components/context/ContextProvider';
 
 const Home = () => {
 
   const [showspin,setShowSpin] = useState(true);
+
+  const {useradd,setUseradd} = useContext(addData);
 
   const navigate = useNavigate();
 
@@ -25,6 +29,10 @@ const Home = () => {
 
   return (
     <>
+    {/* When comany/user added -> then show this Alert message.*/}
+    {
+      useradd ? <Alert variant='success' onClose={() => setUseradd("")} dismissible>{useradd.name.toUpperCase()} Successfully Added</Alert> : ""
+    }
       <div className="container">
         <div className="main_div">
           {/* search add btn */}
@@ -41,7 +49,7 @@ const Home = () => {
               </Form>
             </div>
             <div className="add_btn">
-              <Button variant="primary" onClick={addintern}><i class="fa-solid fa-plus"></i>&nbsp; Add Internship</Button>
+              <Button variant="primary" onClick={addintern}><i className="fa-solid fa-plus"></i>&nbsp; Add Internship</Button>
             </div>
           </div>
 
@@ -82,7 +90,7 @@ const Home = () => {
               <h3>Sort By Date</h3>
               <Dropdown className='text-center'>
                 <Dropdown.Toggle variant='light' className='dropdown_btn' id="dropdown-basic">
-                  <i class="fa-solid fa-sort"></i>
+                  <i className="fa-solid fa-sort"></i>
                 </Dropdown.Toggle>
               </Dropdown>
             </div>
