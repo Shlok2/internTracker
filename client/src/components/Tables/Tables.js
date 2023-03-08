@@ -4,12 +4,13 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Badge from 'react-bootstrap/Badge';
+import Paginations from '../Pagination/Paginations';
 import { NavLink } from 'react-router-dom';
 import { statusChangefunc } from '../../services/Apis';
 import {ToastContainer,toast} from "react-toastify";
 import './table.css';
 
-const Tables = ({userdata,deleteUser,userGet}) => {
+const Tables = ({userdata,deleteUser,userGet,handlePrevious,handleNext,page,pageCount,setPage}) => {
   const selectColor = (ele) => {
     if (ele === "Applied"){
       // setCol("primary");
@@ -65,7 +66,7 @@ const Tables = ({userdata,deleteUser,userGet}) => {
                     return (
                       <>
                         <tr>
-                          <td>{index + 1}</td>
+                          <td>{index + 1 + (page - 1)*5}</td>
                           <td>{element.name}</td>
                           <td>{element.platform}</td>
                           <td>{element.date.slice(0,10)}</td>
@@ -119,6 +120,13 @@ const Tables = ({userdata,deleteUser,userGet}) => {
                   
                 </tbody>      
               </Table>
+              <Paginations
+                handlePrevious = {handlePrevious}
+                handleNext = {handleNext}
+                page = {page}
+                pageCount = {pageCount}
+                setPage = {setPage}
+              />
             </Card>
           </div>
         </Row>

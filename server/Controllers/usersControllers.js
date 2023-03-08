@@ -40,6 +40,8 @@ exports.userget = async(req,res) => {
     const platform = req.query.platform || "";
     const status = req.query.status || "";
     const sorto = req.query.sort || "";
+    const page = req.query.page || 1;
+    const ITEM_PER_PAGE = 5;
 
     const query = {
         name : {$regex:search,$options:"i"} 
@@ -55,18 +57,46 @@ exports.userget = async(req,res) => {
     
     try {    
         // find query(company name) from users model
+
+        const skip = (page - 1) * ITEM_PER_PAGE;
+        const count = await users.countDocuments(query);
+
         if(sorto === "new"){
             // const usersdata = await users.find(query).sort({datecreated:-1});
-            const usersdata = await users.find(query).sort({datecreated : -1});
-            res.status(200).json(usersdata);
+            const usersdata = await users.find(query).sort({datecreated : -1})
+            .limit(ITEM_PER_PAGE).skip(skip)
+            const pageCount = Math.ceil(count/ITEM_PER_PAGE);
+            
+            res.status(200).json({
+                Pagination:{
+                    count,pageCount
+                },
+                usersdata
+            });
         }
         else if(sorto === "old"){
-            const usersdata = await users.find(query).sort({datecreated: 1});
-            res.status(200).json(usersdata);
+            const usersdata = await users.find(query).sort({datecreated: 1})
+            .limit(ITEM_PER_PAGE).skip(skip)
+            const pageCount = Math.ceil(count/ITEM_PER_PAGE);
+            
+            res.status(200).json({
+                Pagination:{
+                    count,pageCount
+                },
+                usersdata
+            });
         }
         else if(sorto === "edited"){
-            const usersdata = await users.find(query).sort({dateUpdated : -1});
-            res.status(200).json(usersdata);
+            const usersdata = await users.find(query).sort({dateUpdated : -1})
+            .limit(ITEM_PER_PAGE).skip(skip)
+            const pageCount = Math.ceil(count/ITEM_PER_PAGE);
+            
+            res.status(200).json({
+                Pagination:{
+                    count,pageCount
+                },
+                usersdata
+            });
         }
     } catch (error) {
         res.status(401).json(error);

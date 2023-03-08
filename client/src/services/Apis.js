@@ -10,8 +10,8 @@ export const registerfunc = async(data,header)=>{
 }
 
 // No need to add header as our default Content-Type is application/json
-export const usergetfunc = async(search,platform,status,sort) => {
-    return await commonrequest("GET",`${BASE_URL}/user/details?search=${search}&platform=${platform}&status=${status}&sort=${sort}`,"");
+export const usergetfunc = async(search,platform,status,sort,page) => {
+    return await commonrequest("GET",`${BASE_URL}/user/details?search=${search}&platform=${platform}&status=${status}&sort=${sort}&page=${page}`,"");
 }
 
 export const singleUsergetfunc = async(id) => {

@@ -20,6 +20,8 @@ const Home = () => {
   const [platform,setPlatform] = useState("All");
   const [status,setStatus] = useState("All");
   const [sort,setSort] = useState("new");
+  const [page,setPage] = useState(1);
+  const [pageCount,setPageCount] = useState(0);
 
   const {useradd,setUseradd} = useContext(addData);
   const {update,setUpdate} = useContext(updateData);
@@ -33,11 +35,11 @@ const Home = () => {
 
   // get user
   const userGet = async() => {
-    const response = await usergetfunc(search,platform,status,sort)
-
+    const response = await usergetfunc(search,platform,status,sort,page)
     // Store all the data coming from db to userdata state
     if(response.status === 200){
-      setUserData(response.data)
+      setUserData(response.data.usersdata);
+      setPageCount(response.data.Pagination.pageCount);
     }
     else{
       console.log("error for get user data");
@@ -68,12 +70,29 @@ const Home = () => {
     }
   }
 
+  // Pagination
+  // handle previous button
+  const handlePrevious = () => {
+    setPage(() => {
+      if(page === 1) return page;
+      return page - 1;
+    })
+  }
+
+  // handle next button
+  const handleNext = () => {
+    setPage(() => {
+      if(page === pageCount) return page;
+      return page + 1;
+    })
+  }
+
   useEffect(() => {
     userGet()
     setTimeout(() => {
       setShowSpin(false);
     },1200)
-  },[search,platform,status,sort])
+  },[search,platform,status,sort,page])
 
   return (
     <>
@@ -186,6 +205,11 @@ const Home = () => {
                                     userdata={userdata}
                                     deleteUser={deleteUser}
                                     userGet={userGet}
+                                    handlePrevious = {handlePrevious}
+                                    handleNext = {handleNext}
+                                    page = {page}
+                                    pageCount = {pageCount}
+                                    setPage = {setPage}
                                   />
         } 
 
