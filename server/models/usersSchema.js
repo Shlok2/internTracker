@@ -44,7 +44,8 @@ const usersSchema = new mongoose.Schema({
         type: String,
         required:true
     },
-    datecreated:Date
+    datecreated:Date,
+    dateUpdated:Date
 });
 
 // Model

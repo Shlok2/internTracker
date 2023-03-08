@@ -1,5 +1,5 @@
-import React,{useState,useEffect} from 'react';
-import { useParams } from 'react-router-dom';
+import React,{useState,useEffect,useContext} from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import "./edit.css"
 import Card from "react-bootstrap/Card";
 import {Button,Row} from 'react-bootstrap';
@@ -9,8 +9,9 @@ import DatePicker from 'react-date-picker';
 import TextField from '@material-ui/core/TextField';
 import { ToastContainer,toast } from 'react-toastify';
 import Spiner from '../../components/Spiner/Spiner';
-import { singleUsergetfunc } from '../../services/Apis';
+import { singleUsergetfunc,editfunc } from '../../services/Apis';
 import 'react-toastify/dist/ReactToastify.css';
+import { updateData } from '../../components/context/ContextProvider';
 
 const Edit = () => {
 
@@ -25,6 +26,9 @@ const Edit = () => {
   const [date,setDate] = useState(new Date());
   const [showspin,setShowSpin] = useState(true);
 
+  const {update,setUpdate} = useContext(updateData);
+  
+  const navigate = useNavigate();
   const {id} = useParams();
 
   // Status Options
@@ -64,9 +68,9 @@ const Edit = () => {
     }
   }
 
-  const submitUserData = (e) => {
+  const submitUserData = async(e) => {
     e.preventDefault();
-    const {name,stage,platform} = inputData;
+    const {name,stage,platform,notes} = inputData;
 
     if(name === ""){
       toast.error("Company Name is required !");
@@ -81,12 +85,33 @@ const Edit = () => {
       toast.error("Status is required !");
     }
     else{
-      toast.success("Added Successfully !")
+      const data =  new FormData();
+      // toast.success("Job Profile Successfully Added !");
+      data.append("name",name);
+      data.append("stage",stage);
+      data.append("platform",platform);
+      data.append("notes",notes);
+      data.append("status",status);
+      data.append("date",date.toString());
+
+      const config = {
+        "Content-Type": "multipart"/"form-data"
+      }
+
+      const response = await editfunc(id,data,config);
+      if(response.status === 200){
+        setUpdate(response.data)
+        navigate("/");
+      }
     }
   }
 
-  useEffect(() => {
+  useEffect(() =>{
     userProfileGet();
+  },[id])
+
+  useEffect(() => {
+    
     setTimeout(() => {
       setShowSpin(false);
     },1200)

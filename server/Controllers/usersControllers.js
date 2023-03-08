@@ -4,7 +4,7 @@ const moment = require("moment");
 // Register user
 //frontend to backend
 exports.userpost = async(req,res)=>{
-    // const file = req.file.filename;
+
     const {name,stage,platform,notes,status,date} = req.body;
 
     if(!name||!stage||!platform||!status||!date){
@@ -49,6 +49,25 @@ exports.singleuserget = async(req,res) => {
     try {
         const userdata = await users.findOne({_id : id});
         res.status(200).json(userdata);
+    } catch (error) {
+        res.status(401).json(error);
+    }
+}
+
+// Edit user
+exports.useredit = async(req,res) => {
+    const {id} = req.params;
+    const {name,stage,platform,notes,status,date} = req.body;
+
+    const dateUpdated = moment(new Date()).format("DD-MM-YYYY hh:mm:ss");
+
+    try {
+        const updateuser = await users.findByIdAndUpdate({_id:id},{
+            name,stage,platform,notes,status,date,dateUpdated
+        },{new:true});
+
+        await updateuser.save();
+        res.status(200).json(updateuser);
     } catch (error) {
         res.status(401).json(error);
     }

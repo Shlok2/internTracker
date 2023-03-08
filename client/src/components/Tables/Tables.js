@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
@@ -8,6 +8,24 @@ import { NavLink } from 'react-router-dom';
 import './table.css';
 
 const Tables = ({userdata}) => {
+  const selectColor = (ele) => {
+    if (ele === "Applied"){
+      // setCol("primary");
+      return "primary";
+    }
+    else if (ele === "Not-Applied"){
+      // setCol("primary");
+      return "secondary";
+    }
+    else if (ele === "In-Contact"){
+      // setCol("primary");
+      return "success";
+    }
+    else{
+      return "danger";
+    }
+  }
+
   return (
     <>
       <div className='container'>
@@ -40,7 +58,8 @@ const Tables = ({userdata}) => {
                           <td className='d-flex align-items-center'>
                             <Dropdown className='text-center'>
                               <Dropdown.Toggle className='dropdown_btn' id="dropdown-basic">
-                                <Badge bg={(element.status === "Applied" || element.status === "In-Contact") ? "primary":"danger"}>
+                                {/* <Badge bg={(element.status === "Applied" || element.status === "In-Contact") ? "primary":"danger"}> */}
+                                <Badge bg={selectColor(element.status)}>
                                   {element.status} <i className="fa-solid fa-angle-down"></i>
                                 </Badge>
                               </Dropdown.Toggle>

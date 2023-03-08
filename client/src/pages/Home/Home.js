@@ -7,7 +7,7 @@ import Spiner from '../../components/Spiner/Spiner';
 import {useNavigate} from 'react-router-dom';
 import Tables from '../../components/Tables/Tables';
 import Alert from 'react-bootstrap/Alert';
-import { addData } from '../../components/context/ContextProvider';
+import { addData,updateData } from '../../components/context/ContextProvider';
 import { usergetfunc } from '../../services/Apis';
 
 const Home = () => {
@@ -17,6 +17,7 @@ const Home = () => {
   const [showspin,setShowSpin] = useState(true);
 
   const {useradd,setUseradd} = useContext(addData);
+  const {update,setUpdate} = useContext(updateData);
 
   const navigate = useNavigate();
 
@@ -47,7 +48,10 @@ const Home = () => {
     <>
     {/* When comany/user added -> then show this Alert message.*/}
     {
-      useradd ? <Alert variant='success' onClose={() => setUseradd("")} dismissible>{useradd.name.toUpperCase()} Successfully Added</Alert> : ""
+      useradd ? <Alert variant='success' onClose={() => setUseradd("")} dismissible>{useradd.name.toUpperCase()} Added Successfully</Alert> : ""
+    }
+    {
+      update ? <Alert variant='primary' onClose={() => setUpdate("")} dismissible>{update.name.toUpperCase()}  Updated Successfully</Alert> : ""
     }
       <div className="container">
         <div className="main_div">
