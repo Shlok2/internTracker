@@ -4,6 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Badge from 'react-bootstrap/Badge';
+import { NavLink } from 'react-router-dom';
 import './table.css';
 
 const Tables = ({userdata}) => {
@@ -54,16 +55,18 @@ const Tables = ({userdata}) => {
                           <td>
                           <Dropdown className='text-center'>
                               <Dropdown.Toggle variant='light' className='action' id="dropdown-basic">
-                                
                                   <i className="fa-solid fa-ellipsis-vertical"></i>
-                                
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
                                 <Dropdown.Item>
-                                  <i className="fa-solid fa-eye" style={{color:"green"}}></i>&nbsp; <span>View</span>
+                                  <NavLink to={`/userprofile/${element._id}`} className="text-decoration-none">
+                                    <i className="fa-solid fa-eye" style={{color:"green"}}></i>&nbsp; <span>View</span>
+                                  </NavLink>                                
                                 </Dropdown.Item>
                                 <Dropdown.Item>
-                                  <i className="fa-solid fa-pen-to-square" style={{color:"blue"}}></i>&nbsp; <span>Edit</span>
+                                  <NavLink to={`/edit/${element._id}`} className="text-decoration-none">
+                                    <i className="fa-solid fa-pen-to-square" style={{color:"blue"}}></i>&nbsp; <span>Edit</span>
+                                  </NavLink> 
                                 </Dropdown.Item>
                                 <Dropdown.Item>
                                   <i className="fa-solid fa-trash" style={{color:"red"}}></i>&nbsp; <span>Delete</span>

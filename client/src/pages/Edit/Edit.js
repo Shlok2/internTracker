@@ -1,4 +1,5 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect} from 'react';
+import { useParams } from 'react-router-dom';
 import "./edit.css"
 import Card from "react-bootstrap/Card";
 import {Button,Row} from 'react-bootstrap';
@@ -8,6 +9,7 @@ import DatePicker from 'react-date-picker';
 import TextField from '@material-ui/core/TextField';
 import { ToastContainer,toast } from 'react-toastify';
 import Spiner from '../../components/Spiner/Spiner';
+import { singleUsergetfunc } from '../../services/Apis';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Edit = () => {
@@ -18,13 +20,12 @@ const Edit = () => {
     platform: "",
     notes: ""
   });
-  // console.log(inputData);
 
   const [status,setStatus] = useState("");
-
   const [date,setDate] = useState(new Date());
-
   const [showspin,setShowSpin] = useState(true);
+
+  const {id} = useParams();
 
   // Status Options
   const options = [
@@ -33,9 +34,6 @@ const Edit = () => {
     { value: 'In-Contact', label: 'In-Contact' },
     { value: 'Rejected', label: 'Rejected' },
   ];
-  // console.log(inputData);
-  // console.log(date);
-  // console.log(status);
 
   // Set Input Values
   const setInputValue = (e) => {
@@ -49,6 +47,21 @@ const Edit = () => {
 
   const setDateValue = (e) => {
     setDate(e);
+  }
+
+  // This function is use to get data for which we presses edit button 
+  // (from backend).
+  // Same details to fetch as clicking on 'View' button in frontend.
+  const userProfileGet = async() => {
+    const response = await singleUsergetfunc(id);
+
+    if(response.status === 200){
+      setInputData(response.data);
+      setStatus(response.data.status);
+      setDate(response.data.date);
+    }else{
+      console.log("error");
+    }
   }
 
   const submitUserData = (e) => {
@@ -73,6 +86,7 @@ const Edit = () => {
   }
 
   useEffect(() => {
+    userProfileGet();
     setTimeout(() => {
       setShowSpin(false);
     },1200)
@@ -109,6 +123,7 @@ const Edit = () => {
                     label={`Internshala`}
                     name="platform"
                     value="Internshala"
+                    checked={inputData.platform === "Internshala" ? true: false}
                     onChange={setInputValue}
                   />
                   <Form.Check
@@ -117,6 +132,7 @@ const Edit = () => {
                     label={`AngelList`}
                     name="platform"
                     value="AngelList"
+                    checked={inputData.platform === "AngelList" ? true: false}
                     onChange={setInputValue}
                   />
                   <Form.Check
@@ -125,13 +141,14 @@ const Edit = () => {
                     label={`Other`}
                     name="platform"
                     value="Other"
+                    checked={inputData.platform === "Other" ? true: false}
                     onChange={setInputValue}
                   />
                 </Form.Group>
 
                 <Form.Group className="mb-3 col-lg-6" controlId="formBasicEmail">
                   <Form.Label>Status</Form.Label>
-                  <Select onChange={setStatusValue} value={status} options={options}/>
+                  <Select onChange={setStatusValue} default={status} options={options}/>
                 </Form.Group>
 
                 <Form.Group className="mb-3 col-lg-6" controlId="formBasicEmail">

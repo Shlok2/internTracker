@@ -76,6 +76,7 @@ const Register = () => {
     }
     else{
       const data =  new FormData();
+      // toast.success("Job Profile Successfully Added !");
       data.append("name",name);
       data.append("stage",stage);
       data.append("platform",platform);
@@ -95,6 +96,7 @@ const Register = () => {
           platform: "",
           notes: ""
         });
+        
         setStatus("");
         setDate(new Date());
         setUseradd(response.data);
@@ -195,7 +197,7 @@ const Register = () => {
               </Row>
             </Form>
           </Card>
-          <ToastContainer position="top-center"/>
+          <ToastContainer/>
         </div>
       }
         

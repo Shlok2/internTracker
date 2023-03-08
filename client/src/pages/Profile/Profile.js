@@ -1,12 +1,40 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/esm/Row";
+import Spiner from '../../components/Spiner/Spiner';
+import {singleUsergetfunc} from "../../services/Apis";
+import { useParams } from 'react-router-dom';
+import moment from "moment";
 import "./profile.css";
 
 const Profile = () => {
+
+  const [userprofile,setUserProfile] = useState({});
+  const [showspin,setShowSpin] = useState(true);
+
+  const {id} = useParams();
+
+  const userProfileGet = async() => {
+    const response = await singleUsergetfunc(id);
+
+    if(response.status === 200){
+      setUserProfile(response.data);
+    }else{
+      console.log("error");
+    }
+  }
+
+  useEffect(() => {
+    userProfileGet();
+    setTimeout(()=>{
+      setShowSpin(false);
+    },1200)
+  },[id])
   return (
     <>
-      <div className="container">
+    {
+      showspin ? <Spiner/> :
+       <div className="container">
         <Card className='card-profile shadow col-lg-6 mx-auto mt-5'>
           <Card.Body>
             <Row>
@@ -17,18 +45,21 @@ const Profile = () => {
               </div>
             </Row>
             <div className='text-center'>
-              <h3>@Shlok Saraogi</h3>
+              <h3><strong><i># {userprofile.name[0].toUpperCase() + userprofile.name.slice(1,)}</i></strong></h3>
               <br/>
-              <h5><i className="fa-solid fa-window-maximize platformx"></i>&nbsp;:- <span>Internshala</span></h5>
-              <h5><i className="fa-solid fa-headset stage"></i>&nbsp;:- <span>1st Round</span></h5>
-              <h5><i className="fa-solid fa-circle-check statusx"></i>&nbsp;:- <span>Not-Active</span></h5>
-              <h5><i className="fa-solid fa-calendar-days calender"></i>&nbsp;:- <span>01/10/2002</span></h5>
+              <h5><i className="fa-solid fa-window-maximize platformx"></i>&nbsp;<strong>Platform</strong> :- <span>{userprofile.platform}</span></h5>
+              <h5><i className="fa-solid fa-headset stage"></i>&nbsp;<strong>Stage</strong> :- <span>{userprofile.stage}</span></h5>
+              <h5><i className="fa-solid fa-circle-check statusx"></i>&nbsp;<strong>Status</strong> :- <span>{userprofile.status}</span></h5>
+              <h5><i className="fa-solid fa-calendar-days calender"></i>&nbsp;<strong>Last Date</strong> :- <span>{moment(userprofile.date).format("DD-MM-YYYY")}</span></h5>
+              <h5><i className="fa-solid fa-calendar-days calender"></i>&nbsp;<strong>Created</strong> :- <span>{moment(userprofile.datecreated).format("DD-MM-YYYY")}</span></h5>
               <br/>
-              <h5><i className="fa-solid fa-note-sticky notes"></i>&nbsp;:- <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eveniet ratione quis modi! Saepe voluptatum iste amet molestias. Quaerat velit dicta, at expedita vero similique suscipit numquam modi quibusdam sapiente quae!</span></h5>
+              <h5><i className="fa-solid fa-note-sticky notes"></i>&nbsp;<strong>Notes</strong> :- <span>{userprofile.notes}</span></h5>
             </div>
           </Card.Body>
         </Card>
       </div>
+    }
+      
     </>
   )
 }
