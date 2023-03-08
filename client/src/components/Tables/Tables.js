@@ -96,7 +96,7 @@ const Tables = ({userdata,deleteUser,userGet,handlePrevious,handleNext,page,page
                                 <Dropdown.Item>
                                   <NavLink to={`/userprofile/${element._id}`} className="text-decoration-none">
                                     <i className="fa-solid fa-eye" style={{color:"green"}}></i>&nbsp; <span>View</span>
-                                  </NavLink>                                
+                                  </NavLink>                           
                                 </Dropdown.Item>
                                 <Dropdown.Item>
                                   <NavLink to={`/edit/${element._id}`} className="text-decoration-none">
