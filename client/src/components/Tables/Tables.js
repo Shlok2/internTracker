@@ -5,9 +5,11 @@ import Table from 'react-bootstrap/Table';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Badge from 'react-bootstrap/Badge';
 import { NavLink } from 'react-router-dom';
+import { statusChangefunc } from '../../services/Apis';
+import {ToastContainer,toast} from "react-toastify";
 import './table.css';
 
-const Tables = ({userdata,deleteUser}) => {
+const Tables = ({userdata,deleteUser,userGet}) => {
   const selectColor = (ele) => {
     if (ele === "Applied"){
       // setCol("primary");
@@ -26,7 +28,20 @@ const Tables = ({userdata,deleteUser}) => {
     }
   }
 
+  const handleChange = async(id,status) => {
+    const response = await statusChangefunc(id,status);
+
+    if(response.status === 200){
+      userGet();
+      toast.success("Status Updated");
+    }
+    else{
+      toast.error("Error");
+    }
+  }
+
   return (
+
     <>
       <div className='container'>
         <Row>
@@ -64,10 +79,10 @@ const Tables = ({userdata,deleteUser}) => {
                                 </Badge>
                               </Dropdown.Toggle>
                               <Dropdown.Menu>
-                                <Dropdown.Item>Applied</Dropdown.Item>
-                                <Dropdown.Item>Not-Applied</Dropdown.Item>
-                                <Dropdown.Item>In-Contact</Dropdown.Item>
-                                <Dropdown.Item>Rejected</Dropdown.Item>
+                                <Dropdown.Item onClick={()=>handleChange(element._id,"Applied")}>Applied</Dropdown.Item>
+                                <Dropdown.Item onClick={()=>handleChange(element._id,"Not-Applied")}>Not-Applied</Dropdown.Item>
+                                <Dropdown.Item onClick={()=>handleChange(element._id,"In-Contact")}>In-Contact</Dropdown.Item>
+                                <Dropdown.Item onClick={()=>handleChange(element._id,"Rejected")}>Rejected</Dropdown.Item>
                               </Dropdown.Menu>
                             </Dropdown>
                           </td>
@@ -107,6 +122,7 @@ const Tables = ({userdata,deleteUser}) => {
             </Card>
           </div>
         </Row>
+        <ToastContainer/>
       </div>
     </>
   )

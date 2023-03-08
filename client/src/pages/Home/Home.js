@@ -8,7 +8,7 @@ import {useNavigate} from 'react-router-dom';
 import Tables from '../../components/Tables/Tables';
 import Alert from 'react-bootstrap/Alert';
 import { addData,updateData,dltdata } from '../../components/context/ContextProvider';
-import { usergetfunc,deletfunc } from '../../services/Apis';
+import { usergetfunc,deletfunc,exporttocsvfunc } from '../../services/Apis';
 import {toast} from 'react-toastify';
 
 const Home = () => {
@@ -16,6 +16,10 @@ const Home = () => {
   // This will store all the database content entries.
   const [userdata,setUserData] = useState([]);
   const [showspin,setShowSpin] = useState(true);
+  const [search,setSearch] = useState("");
+  const [platform,setPlatform] = useState("All");
+  const [status,setStatus] = useState("All");
+  const [sort,setSort] = useState("new");
 
   const {useradd,setUseradd} = useContext(addData);
   const {update,setUpdate} = useContext(updateData);
@@ -29,7 +33,7 @@ const Home = () => {
 
   // get user
   const userGet = async() => {
-    const response = await usergetfunc()
+    const response = await usergetfunc(search,platform,status,sort)
 
     // Store all the data coming from db to userdata state
     if(response.status === 200){
@@ -53,12 +57,23 @@ const Home = () => {
     }
   }
 
+  // export User
+  const exportuser = async() => {
+    const response = await exporttocsvfunc();
+    if(response.status === 200){
+      window.open(response.data.downloadUrl,"blank");
+    }
+    else{
+      toast.error("Error !");
+    }
+  }
+
   useEffect(() => {
     userGet()
     setTimeout(() => {
       setShowSpin(false);
     },1200)
-  },[])
+  },[search,platform,status,sort])
 
   return (
     <>
@@ -83,6 +98,7 @@ const Home = () => {
                   placeholder="Search"
                   className="me-2"
                   aria-label="Search"
+                  onChange={(e) => setSearch(e.target.value)}
                 />
                 <Button variant="success" className='search_btn'>Search</Button>
               </Form>
@@ -95,7 +111,7 @@ const Home = () => {
           {/* export to csv, filter by Platform, sort by date/time, filter by status */}
           <div className='filter_div mt-5 d-flex justify-content-between flex-wrap'>
             <div className="export_csv">
-              <Button className='export_btn'>Export To CSV</Button>
+              <Button className='export_btn' onClick={exportuser}>Export To CSV</Button>
             </div>
             <div className="filter_platform">
               <div className="filter">
@@ -105,7 +121,8 @@ const Home = () => {
                     type={"radio"}
                     label={`All`}
                     name="platform"
-                    value="ALL"
+                    value="All"
+                    onChange={(e) => setPlatform(e.target.value)}
                     defaultChecked
                   />
                   <Form.Check
@@ -113,12 +130,14 @@ const Home = () => {
                     label={`Internshala`}
                     name="platform"
                     value="Internshala"
+                    onChange={(e) => setPlatform(e.target.value)}
                   />
                   <Form.Check
                     type={"radio"}
                     label={`AngelList`}
                     name="platform"
                     value="AngelList"
+                    onChange={(e) => setPlatform(e.target.value)}
                   />
                 </div>
               </div>
@@ -131,6 +150,11 @@ const Home = () => {
                 <Dropdown.Toggle variant='light' className='dropdown_btn' id="dropdown-basic">
                   <i className="fa-solid fa-sort"></i>
                 </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={()=>setSort("new")}>New</Dropdown.Item>
+                  <Dropdown.Item onClick={()=>setSort("edited")}>Last Edited</Dropdown.Item>
+                  <Dropdown.Item onClick={()=>setSort("old")}>Old</Dropdown.Item>
+                </Dropdown.Menu>
               </Dropdown>
             </div>
 
@@ -144,10 +168,11 @@ const Home = () => {
                     Select Status
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item>Applied</Dropdown.Item>
-                    <Dropdown.Item>Not-Applied</Dropdown.Item>
-                    <Dropdown.Item>In-Contact</Dropdown.Item>
-                    <Dropdown.Item>Rejected</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>setStatus("All")}>All</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>setStatus("Applied")}>Applied</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>setStatus("Not-Applied")}>Not-Applied</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>setStatus("In-Contact")}>In-Contact</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>setStatus("Rejected")}>Rejected</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
                 </div>
@@ -155,10 +180,12 @@ const Home = () => {
             </div>
           </div>
         </div>
+        <br/>
         {
           showspin ? <Spiner/> : <Tables
                                     userdata={userdata}
                                     deleteUser={deleteUser}
+                                    userGet={userGet}
                                   />
         } 
 

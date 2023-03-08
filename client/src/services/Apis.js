@@ -10,8 +10,8 @@ export const registerfunc = async(data,header)=>{
 }
 
 // No need to add header as our default Content-Type is application/json
-export const usergetfunc = async() => {
-    return await commonrequest("GET",`${BASE_URL}/user/details`,"");
+export const usergetfunc = async(search,platform,status,sort) => {
+    return await commonrequest("GET",`${BASE_URL}/user/details?search=${search}&platform=${platform}&status=${status}&sort=${sort}`,"");
 }
 
 export const singleUsergetfunc = async(id) => {
@@ -24,4 +24,12 @@ export const editfunc = async(id,data,header) => {
 
 export const deletfunc = async(id) => {
     return await commonrequest("DELETE",`${BASE_URL}/user/delete/${id}`,{});
+}
+
+export const statusChangefunc = async(id,data) => {
+    return await commonrequest("PUT",`${BASE_URL}/user/status/${id}`,{data});
+}
+
+export const exporttocsvfunc = async() => {
+    return await commonrequest("GET",`${BASE_URL}/userexport`,"");
 }

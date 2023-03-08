@@ -1,5 +1,7 @@
 const users = require("../models/usersSchema");
 const moment = require("moment");
+const csv = require("fast-csv");
+const fs = require("fs");
 
 // Register user
 //frontend to backend
@@ -33,10 +35,39 @@ exports.userpost = async(req,res)=>{
 //usersget
 // backend to frontend
 exports.userget = async(req,res) => {
-    try {
-        // find all users from users model
-        const usersdata = await users.find();
-        res.status(200).json(usersdata);
+
+    const search = req.query.search || "";
+    const platform = req.query.platform || "";
+    const status = req.query.status || "";
+    const sorto = req.query.sort || "";
+
+    const query = {
+        name : {$regex:search,$options:"i"} 
+    }
+
+    if(platform !== "All"){
+        query.platform = platform
+    }
+
+    if(status !== "All"){
+        query.status = status
+    }
+    
+    try {    
+        // find query(company name) from users model
+        if(sorto === "new"){
+            // const usersdata = await users.find(query).sort({datecreated:-1});
+            const usersdata = await users.find(query).sort({datecreated : -1});
+            res.status(200).json(usersdata);
+        }
+        else if(sorto === "old"){
+            const usersdata = await users.find(query).sort({datecreated: 1});
+            res.status(200).json(usersdata);
+        }
+        else if(sorto === "edited"){
+            const usersdata = await users.find(query).sort({dateUpdated : -1});
+            res.status(200).json(usersdata);
+        }
     } catch (error) {
         res.status(401).json(error);
     }
@@ -80,5 +111,67 @@ exports.userdelete = async(req,res) => {
         res.status(200).json(deleteuser);
     } catch (error) {
         res.status(401).json(error);
+    }
+}
+
+// change status
+exports.userstatus = async(req,res)=>{
+    const {id} = req.params;
+    const {data} = req.body;
+    console.log(data);
+
+    try {
+        const userstatusupdate = await users.findByIdAndUpdate({_id:id},{status:data},{new:true});
+        res.status(200).json(userstatusupdate);
+    } catch (error) {
+        res.status(401).json(error);
+    }
+}
+
+exports.userExport = async (req, res) => {
+    try {
+        const usersdata = await users.find();
+
+        const csvStream = csv.format({ headers: true });
+
+        if (!fs.existsSync("public/files/export/")) {
+            if (!fs.existsSync("public/files")) {
+                fs.mkdirSync("public/files/");
+            }
+            if (!fs.existsSync("public/files/export")) {
+                fs.mkdirSync("./public/files/export/");
+            }
+        }
+
+        const writablestream = fs.createWriteStream(
+            "public/files/export/users.csv"
+        );
+
+        csvStream.pipe(writablestream);
+
+        writablestream.on("finish", function () {
+            res.json({
+                downloadUrl: `http://localhost:6010/files/export/users.csv`,
+            });
+        });
+        if (usersdata.length > 0) {
+            usersdata.map((user) => {
+                csvStream.write({
+                    Name: user.name ? user.name : "-",
+                    Platform: user.platform ? user.platform : "-",
+                    Stage: user.stage ? user.stage : "-",
+                    Date: user.date ? user.date : "-",
+                    Status: user.status ? user.status : "-",
+                    Notes: user.notes ? user.notes : "-",
+                    DateCreated: user.datecreated ? user.datecreated : "-",
+                    DateUpdated: user.dateUpdated ? user.dateUpdated : "-"
+                })
+            })
+        }
+        csvStream.end();
+        writablestream.end();
+
+    } catch (error) {
+        res.status(401).json(error)
     }
 }
