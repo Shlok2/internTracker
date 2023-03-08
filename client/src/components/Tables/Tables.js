@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React from 'react';
 import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Table from 'react-bootstrap/Table';
@@ -7,7 +7,7 @@ import Badge from 'react-bootstrap/Badge';
 import { NavLink } from 'react-router-dom';
 import './table.css';
 
-const Tables = ({userdata}) => {
+const Tables = ({userdata,deleteUser}) => {
   const selectColor = (ele) => {
     if (ele === "Applied"){
       // setCol("primary");
@@ -88,7 +88,9 @@ const Tables = ({userdata}) => {
                                   </NavLink> 
                                 </Dropdown.Item>
                                 <Dropdown.Item>
-                                  <i className="fa-solid fa-trash" style={{color:"red"}}></i>&nbsp; <span>Delete</span>
+                                  <div onClick={()=>deleteUser(element._id)}>
+                                    <i className="fa-solid fa-trash" style={{color:"red"}}></i>&nbsp; <span>Delete</span>
+                                  </div>
                                 </Dropdown.Item>
                                 
                               </Dropdown.Menu>

@@ -7,8 +7,9 @@ import Spiner from '../../components/Spiner/Spiner';
 import {useNavigate} from 'react-router-dom';
 import Tables from '../../components/Tables/Tables';
 import Alert from 'react-bootstrap/Alert';
-import { addData,updateData } from '../../components/context/ContextProvider';
-import { usergetfunc } from '../../services/Apis';
+import { addData,updateData,dltdata } from '../../components/context/ContextProvider';
+import { usergetfunc,deletfunc } from '../../services/Apis';
+import {toast} from 'react-toastify';
 
 const Home = () => {
 
@@ -18,6 +19,7 @@ const Home = () => {
 
   const {useradd,setUseradd} = useContext(addData);
   const {update,setUpdate} = useContext(updateData);
+  const {deldata,setDeldata} = useContext(dltdata);
 
   const navigate = useNavigate();
 
@@ -25,6 +27,7 @@ const Home = () => {
     navigate("/register");
   }
 
+  // get user
   const userGet = async() => {
     const response = await usergetfunc()
 
@@ -34,6 +37,19 @@ const Home = () => {
     }
     else{
       console.log("error for get user data");
+    }
+  }
+
+  // delete user
+  // This func is passes as props to Tables and will be called from there.
+  const deleteUser = async(id) => {
+    const response = await deletfunc(id);
+    if(response.status === 200){
+      userGet();
+      setDeldata(response.data);
+    }
+    else{
+      toast.error("error");
     }
   }
 
@@ -52,6 +68,9 @@ const Home = () => {
     }
     {
       update ? <Alert variant='primary' onClose={() => setUpdate("")} dismissible>{update.name.toUpperCase()}  Updated Successfully</Alert> : ""
+    }
+    {
+      deldata ? <Alert variant='danger' onClose={() => setDeldata("")} dismissible>{deldata.name.toUpperCase()}  Deleted Successfully</Alert> : ""
     }
       <div className="container">
         <div className="main_div">
@@ -139,6 +158,7 @@ const Home = () => {
         {
           showspin ? <Spiner/> : <Tables
                                     userdata={userdata}
+                                    deleteUser={deleteUser}
                                   />
         } 
 

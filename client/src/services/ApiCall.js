@@ -1,6 +1,7 @@
 import axios from "axios";
 
 // Whenever we want to create API call we will call this function commonrequest.
+// This will request backend for data and return that data to frontend.
 export const commonrequest = async(methods,url,body,header) => {
     
     // config -> object
