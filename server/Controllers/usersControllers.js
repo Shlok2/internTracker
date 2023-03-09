@@ -148,7 +148,7 @@ exports.userdelete = async(req,res) => {
 exports.userstatus = async(req,res)=>{
     const {id} = req.params;
     const {data} = req.body;
-    console.log(data);
+    // console.log(data);
 
     try {
         const userstatusupdate = await users.findByIdAndUpdate({_id:id},{status:data},{new:true});

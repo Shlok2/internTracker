@@ -13,7 +13,7 @@ const Paginations = ({handlePrevious,handleNext,page,pageCount,setPage}) => {
               Array(pageCount).fill(null).map((element,index)=>{
                 return(
                   <>
-                    <Pagination.Item active={page === index + 1 ? true : false} onClick={()=>setPage(index + 1)}>{index + 1}</Pagination.Item>
+                    <Pagination.Item key={index} active={page === index + 1 ? true : false} onClick={()=>setPage(index + 1)}>{index + 1}</Pagination.Item>
                   </>
                 )
               })
