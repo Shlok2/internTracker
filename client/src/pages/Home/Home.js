@@ -10,6 +10,8 @@ import Alert from 'react-bootstrap/Alert';
 import { addData,updateData,dltdata } from '../../components/context/ContextProvider';
 import { usergetfunc,deletfunc,exporttocsvfunc } from '../../services/Apis';
 import {toast} from 'react-toastify';
+import Card from 'react-bootstrap/Card';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const Home = () => {
 
@@ -129,14 +131,25 @@ const Home = () => {
 
           {/* export to csv, filter by Platform, sort by date/time, filter by status */}
           <div className='filter_div mt-5 d-flex justify-content-between flex-wrap'>
-            <div className="export_csv">
-              <Button className='export_btn' onClick={exportuser}>Export To CSV</Button>
-            </div>
+            <Card className='shadow'>
+              <Card.Header style={{width:"266px"}} className="text-center">
+                <h3>Export To Csv</h3>
+              </Card.Header>
+              <div className="export_csv text-center mt-2">
+                <Button className='export_btn' onClick={exportuser}>Export</Button>
+              </div>
+            </Card>
+
+            <Card className='shadow'>
             <div className="filter_platform">
               <div className="filter">
-                <h3>Filter By Platform</h3>
-                <div className=" d-flex justify-content-between">
+                <Card.Header className="text-center">
+                  <h3>Filter By Platform</h3>
+                </Card.Header>
+                <Card.Body>
+                <div className="d-flex justify-content-between">
                   <Form.Check
+                    inline
                     type={"radio"}
                     label={`All`}
                     name="platform"
@@ -145,6 +158,7 @@ const Home = () => {
                     defaultChecked
                   />
                   <Form.Check
+                    inline
                     type={"radio"}
                     label={`Internshala`}
                     name="platform"
@@ -152,6 +166,7 @@ const Home = () => {
                     onChange={(e) => setPlatform(e.target.value)}
                   />
                   <Form.Check
+                    inline
                     type={"radio"}
                     label={`AngelList`}
                     name="platform"
@@ -159,44 +174,58 @@ const Home = () => {
                     onChange={(e) => setPlatform(e.target.value)}
                   />
                 </div>
+                </Card.Body>
               </div>
             </div>
+            </Card>
 
             {/* Sort by value */}
+            <Card className='shadow' style={{width:"266px"}}>
             <div className="filter_newold">
+              <Card.Header className="text-center">
               <h3>Sort By Date</h3>
-              <Dropdown className='text-center'>
-                <Dropdown.Toggle variant='light' className='dropdown_btn' id="dropdown-basic">
-                  <i className="fa-solid fa-sort"></i>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
+              </Card.Header>
+              {/* <Dropdown className='text-center mt-2'> */}
+              <DropdownButton
+                    id="dropdown-button-dark-example2"
+                    variant="light"
+                    menuVariant="dark"
+                    title=<i className="fa-solid fa-sort"></i>
+                    className="text-center mt-2 dropdown_btn"
+                  >    
                   <Dropdown.Item onClick={()=>setSort("new")}>New</Dropdown.Item>
                   <Dropdown.Item onClick={()=>setSort("edited")}>Last Edited</Dropdown.Item>
                   <Dropdown.Item onClick={()=>setSort("old")}>Old</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              </DropdownButton>
             </div>
+            </Card>
 
             {/* Filter By Status */}
+            <Card className='shadow' style={{width:"266px"}}>
             <div className="filter_status">
               <div className="status">
+                <Card.Header className="text-center">
                 <h3>Filter By Status</h3>
+                </Card.Header>
                 <div className="status_radio d-flex justify-content-around flex-wrap">
-                <Dropdown className='text-center'>
-                  <Dropdown.Toggle variant='success' id="dropdown-basic">
-                    Select Status
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
+                
+                  <DropdownButton
+                    id="dropdown-button-dark-example2"
+                    variant="success"
+                    menuVariant="dark"
+                    title="Select Status"
+                    className="text-center mt-2"
+                  >
                     <Dropdown.Item onClick={()=>setStatus("All")}>All</Dropdown.Item>
                     <Dropdown.Item onClick={()=>setStatus("Applied")}>Applied</Dropdown.Item>
                     <Dropdown.Item onClick={()=>setStatus("Not-Applied")}>Not-Applied</Dropdown.Item>
                     <Dropdown.Item onClick={()=>setStatus("In-Contact")}>In-Contact</Dropdown.Item>
                     <Dropdown.Item onClick={()=>setStatus("Rejected")}>Rejected</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
+                </DropdownButton>
                 </div>
               </div>
             </div>
+            </Card>
           </div>
         </div>
         <br/>

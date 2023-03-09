@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url('../public/kiwihug-y_2GC4EhOP4-unsplash.jpg');
+  /* background-image: url('../public/wp3405510.jpg'); */
 }
 
 code {
