@@ -67,14 +67,17 @@ const Tables = ({userdata,deleteUser,userGet,handlePrevious,handleNext,page,page
                       <>
                         <tr>
                           <td>{index + 1 + (page - 1)*5}</td>
-                          <td>{element.name}</td>
+                          <td>
+                            <NavLink to={`/userprofile/${element._id}`} className="txt_dec">
+                              {element.name}
+                            </NavLink>
+                          </td>
                           <td>{element.platform}</td>
                           <td>{element.date.slice(0,10)}</td>
                           <td>{element.stage}</td>
                           <td className='d-flex align-items-center'>
                             <Dropdown className='text-center'>
                               <Dropdown.Toggle className='dropdown_btn' id="dropdown-basic">
-                                {/* <Badge bg={(element.status === "Applied" || element.status === "In-Contact") ? "primary":"danger"}> */}
                                 <Badge bg={selectColor(element.status)}>
                                   {element.status} <i className="fa-solid fa-angle-down"></i>
                                 </Badge>
@@ -95,12 +98,12 @@ const Tables = ({userdata,deleteUser,userGet,handlePrevious,handleNext,page,page
                               <Dropdown.Menu>
                                 <Dropdown.Item>
                                   <NavLink to={`/userprofile/${element._id}`} className="text-decoration-none">
-                                    <i className="fa-solid fa-eye" style={{color:"green"}}></i>&nbsp; <span>View</span>
+                                    <i className="fa-solid fa-eye" style={{color:"green"}}></i>&nbsp; <span style={{color:"black"}}>View</span>
                                   </NavLink>                           
                                 </Dropdown.Item>
                                 <Dropdown.Item>
                                   <NavLink to={`/edit/${element._id}`} className="text-decoration-none">
-                                    <i className="fa-solid fa-pen-to-square" style={{color:"blue"}}></i>&nbsp; <span>Edit</span>
+                                    <i className="fa-solid fa-pen-to-square" style={{color:"blue"}}></i>&nbsp; <span style={{color:"black"}}>Edit</span>
                                   </NavLink> 
                                 </Dropdown.Item>
                                 <Dropdown.Item>

@@ -94,7 +94,7 @@ const Home = () => {
     setTimeout(() => {
       setShowSpin(false);
     },1200)
-  },[search,platform,status,sort,page])
+  },[search,platform,status,sort,page]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

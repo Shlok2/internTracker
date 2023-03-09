@@ -4,6 +4,8 @@ import Row from "react-bootstrap/esm/Row";
 import Spiner from '../../components/Spiner/Spiner';
 import {singleUsergetfunc} from "../../services/Apis";
 import { useParams } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import moment from "moment";
 import "./profile.css";
 
@@ -13,6 +15,7 @@ const Profile = () => {
   const [showspin,setShowSpin] = useState(true);
 
   const {id} = useParams();
+  const navigate = useNavigate();
 
   const userProfileGet = async() => {
     const response = await singleUsergetfunc(id);
@@ -22,6 +25,10 @@ const Profile = () => {
     }else{
       console.log("error");
     }
+  }
+
+  const ViewPage = () => {
+    navigate(`/edit/${userprofile._id}`)
   }
 
   useEffect(() => {
@@ -45,6 +52,7 @@ const Profile = () => {
               </div>
             </Row>
             <div className='text-center'>
+              <Button onClick={ViewPage} variant="primary" className='edit_btn'><i class="fa-solid fa-pen-to-square"></i></Button>
               <h3><strong><i># {userprofile.name[0].toUpperCase() + userprofile.name.slice(1,)}</i></strong></h3>
               <br/>
               <h5><i className="fa-solid fa-window-maximize platformx"></i>&nbsp;<strong>Platform</strong> :- <span>{userprofile.platform}</span></h5>
