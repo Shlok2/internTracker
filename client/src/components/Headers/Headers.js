@@ -12,6 +12,7 @@ const Headers = () => {
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/register">Register</Nav.Link>
+            <Nav.Link href="/openai">Ask Questions</Nav.Link>
           </Nav>
         </Container>
       </Navbar>

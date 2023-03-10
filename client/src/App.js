@@ -6,6 +6,7 @@ import Home from './pages/Home/Home';
 import Register from './pages/Register/Register';
 import Edit from './pages/Edit/Edit';
 import Profile from './pages/Profile/Profile';
+import Openai from './pages/OpenAI/Openai';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/register' element={<Register/>} />
         <Route path='/edit/:id' element={<Edit/>} />
         <Route path='/userprofile/:id' element={<Profile/>} />
+        <Route path="/openai" element={<Openai/>}/>
       </Routes>
     </>
   );

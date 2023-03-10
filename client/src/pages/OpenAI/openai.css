@@ -1,0 +1,48 @@
+.oaHeading{
+    position:absolute;
+    left:600px;
+    top: 85px;
+    font-family: 'Alegreya SC', serif;
+}
+
+.oatxtArea  {
+    width: 100%;
+    height: 50px;
+  
+    color: #fff;
+    font-size: 18px;
+  
+    padding: 10px;
+    background: transparent;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    resize: none
+  }
+
+.oabutton {
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background: transparent;
+  }
+
+.oabutton:hover{
+    background:#1f856d;
+}
+
+.oaform{
+    position:absolute;
+    left:120px;
+    top: 160px;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 10px;
+    background: #40414F;
+    border-radius: 10px;
+
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}

@@ -33,3 +33,7 @@ export const statusChangefunc = async(id,data) => {
 export const exporttocsvfunc = async() => {
     return await commonrequest("GET",`${BASE_URL}/userexport`,"");
 }
+
+export const openaifunc = async(data) => {
+    return await commonrequest("POST",`${BASE_URL}/openai`,{prompt:data});
+}
