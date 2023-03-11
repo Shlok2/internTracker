@@ -19,8 +19,8 @@ const Openai = () => {
         e.preventDefault();
         const response = await openaifunc(oainput);
 
-    
-        if(response.status === 200){     
+
+        if(response.status === 200){ 
             setOaoutput(response.data.bot);
             if(response.data.bot !== ""){
                 setTemp(false);
