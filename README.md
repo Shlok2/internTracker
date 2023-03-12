@@ -8,3 +8,6 @@ Once You find an opportunity, store it in website and go to 'Ask Questions' sect
 3) 'npm start' in client side and 'nodemon app.js' in server side.
 4) Open this website in client -> 'localhost:3000' and server ->
    'locahost:6010'
+
+## To change the OpenAI API ->
+1) Add .env variable -> (In server) -> (OPENAI_API_KEY) and change it.
