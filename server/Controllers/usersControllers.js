@@ -27,6 +27,8 @@ exports.userpost = async(req,res)=>{
         }
         else{
             const datecreated = moment(new Date()).format("YYYY-MM-DD hh:mm:ss")
+            // console.log(datecreated);
+            // console.log(typeof datecreated);
             const userData = new users({
                 name,stage,platform,notes,status,date,datecreated
             });
@@ -95,7 +97,7 @@ exports.userget = async(req,res) => {
             });
         }
         else if(sorto === "edited"){
-            const usersdata = await users.find(query).sort({dateUpdated : -1})
+            const usersdata = await users.find(query).sort({dateUpdated: -1})
             .limit(ITEM_PER_PAGE).skip(skip)
             const pageCount = Math.ceil(count/ITEM_PER_PAGE);
             
@@ -128,12 +130,14 @@ exports.useredit = async(req,res) => {
     const {id} = req.params;
     const {name,stage,platform,notes,status,date} = req.body;
 
-    const dateUpdated = moment(new Date()).format("DD-MM-YYYY hh:mm:ss");
-
+    const dateUpdated = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
+    // console.log(dateUpdated);
+    // console.log(typeof dateUpdated);
+    
     try {
         const updateuser = await users.findByIdAndUpdate({_id:id},{
             name,stage,platform,notes,status,date,dateUpdated
-        },{new:true});
+        },{new:true}); 
 
         await updateuser.save();
         res.status(200).json(updateuser);
