@@ -5,7 +5,7 @@ const Spiner = () => {
   return (
     <>
       <div className="d-flex justify-content-center align-items-center" style={{width:"100%", height:"50vh"}}>
-        <Spinner animation='border' variant='danger' />&nbsp; Loading...
+        <Spinner animation='border' variant='danger' />&nbsp; <span style={{color: "#a7a7ae"}}>Loading...</span>
       </div>
     </>
   )

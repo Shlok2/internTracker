@@ -31,6 +31,12 @@ const Openai = () => {
         }
     }
 
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            handleChange(event);
+        }
+      }
+
   return (
     <>
         <div>
@@ -38,8 +44,8 @@ const Openai = () => {
         </div>  
         <div className='oabox'>
             <form className='oaform'>
-                <textarea name = "prompt" rows = "1" cols="1" placeholder="Eg. What are the leetcode questions asked in ola technical round." className='oatxtArea' onChange={(e)=>{setOainput(e.target.value)}}></textarea>
-                <Button className='oabutton' onClick={handleChange}>Export</Button>
+                <textarea onKeyDown ={handleKeyPress} name = "prompt" rows = "1" cols="1" placeholder="Eg. What are the leetcode questions asked in ola technical round." className='oatxtArea' onChange={(e)=>{setOainput(e.target.value)}}></textarea>
+                <Button className='oabutton' onClick={handleChange}>Search</Button>
             </form>
 
             {
