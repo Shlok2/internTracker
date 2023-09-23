@@ -11,3 +11,6 @@ Once You find an opportunity, store it in website and go to 'Ask Questions' sect
 
 ## To change the OpenAI API ->
 1) Add .env variable -> (In server) -> (OPENAI_API_KEY) and change it.
+
+## Future Works!
+1) To integrate google Calender API for reminders of interviews.
